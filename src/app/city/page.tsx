@@ -4,9 +4,18 @@ import CurrentWeather from '@/components/CurrentWeather';
 import DayForecast from '@/components/DayForecast';
 import ConditionsSection from '@/components/ConditionsSection ';
 import { useWeather } from '@/hooks/useWeather';
+import { useSearchParams } from 'next/navigation';
 
-export default function Home() {
-  const { data, isLoading, error } = useWeather();
+export default function City() {
+  const searchParams = useSearchParams();
+
+  const name = searchParams.get('name') ?? undefined;
+  const latStr = searchParams.get('lat');
+  const lonStr = searchParams.get('lon');
+  const lat = latStr !== null ? Number(latStr) : undefined;
+  const lon = lonStr !== null ? Number(lonStr) : undefined;
+
+  const { data, isLoading, error } = useWeather(name, lat, lon);
 
   if (isLoading) return <p>Loading...</p>;
   if (error || !data) return <p>Failed to fetch data : {error?.message}</p>;
