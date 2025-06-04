@@ -3,20 +3,16 @@ import ConditionChart from './ConditionsChart';
 import WeatherCondionts from './WeatherConditions';
 import { SunPosition } from './SunPosition';
 import { Visibility } from './Visibility';
-import { WeatherResponse } from '@/types/apiType';
 
-type Props = {
-  data: WeatherResponse;
-};
-const ConditionsSection = ({ data }: Props) => {
+const ConditionsSection = () => {
   return (
     <div className='grid grid-cols-2 gap-6'>
-      <ConditionChart data={data} />
+      <ConditionChart />
       <div className='grid gap-4'>
-        <WeatherCondionts data={data} />
+        <WeatherCondionts />
         <div className='grid grid-cols-2 gap-4'>
-          <SunPosition data={data} />
-          <Visibility data={data} />
+          <SunPosition />
+          <Visibility />
         </div>
       </div>
     </div>

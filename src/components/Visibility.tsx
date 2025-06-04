@@ -7,13 +7,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { WeatherResponse } from '@/types/apiType';
+import { useWeather } from '@/hooks/useWeather';
 
-type Props = {
-  data: WeatherResponse;
-};
+export function Visibility() {
+  const { data, error } = useWeather();
 
-export function Visibility({ data }: Props) {
+  if (error) return <p>Failed to fetch data : {error?.message}</p>;
+
   return (
     <Card className='bg-card-foreground border-none '>
       <CardHeader>
@@ -23,7 +23,10 @@ export function Visibility({ data }: Props) {
         <div className='flex justify-between w-full'>
           <div className='flex flex-col items-center'>
             <span className='font-semibold text-4xl text-foreground'>
-              {data?.visibility / 1000 || '--'} KM
+              {typeof data?.visibility === 'number'
+                ? data.visibility / 1000
+                : '--'}{' '}
+              KM
             </span>
           </div>
         </div>

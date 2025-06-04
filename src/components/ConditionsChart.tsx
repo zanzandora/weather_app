@@ -23,13 +23,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { AirPolluton, WeatherResponse } from '@/types/apiType';
-import { useAirPollution } from '@/hooks/useWeather';
+import { AirPolluton } from '@/types/apiType';
+import { useAirPollution, useWeather } from '@/hooks/useWeather';
 import { Loader2 } from 'lucide-react';
-
-type Props = {
-  data: WeatherResponse;
-};
 
 // Khoảng thời gian options
 const TIME_RANGE_OPTIONS = [
@@ -118,7 +114,9 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function ConditionChart({ data }: Props) {
+export default function ConditionChart() {
+  const { data: currentWeather, error } = useWeather();
+
   const [timeRange, setTimeRange] = useState<number>(90); // Mặc định 90 ngày
   const [timestamps, setTimestamps] = useState({ start: 0, end: 0 });
 
@@ -135,8 +133,8 @@ export default function ConditionChart({ data }: Props) {
     isLoading,
     isError,
   } = useAirPollution(
-    data.coord.lat,
-    data.coord.lon,
+    currentWeather!.coord.lat,
+    currentWeather!.coord.lon,
     timestamps.start,
     timestamps.end
   );
@@ -153,6 +151,8 @@ export default function ConditionChart({ data }: Props) {
       : 0;
 
   const airQuality = getAirQuality(avgAqi);
+
+  if (error) return <p>Failed to fetch data : {error?.message}</p>;
 
   return (
     <Card className='bg-card-foreground border-none'>

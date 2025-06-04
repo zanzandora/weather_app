@@ -8,13 +8,9 @@ import {
 } from './ui/card';
 import Image from 'next/image';
 import { Badge } from './ui/badge';
-import { WeatherResponse } from '@/types/apiType';
 import { iconMap } from '@/lib/constants/weather-icons';
 import FavoriteButton from './FavoriteButton';
-
-interface Props {
-  data: WeatherResponse;
-}
+import { useWeather } from '@/hooks/useWeather';
 
 function getWeatherIcon(code?: number) {
   if (code !== undefined && iconMap[code]) {
@@ -23,7 +19,11 @@ function getWeatherIcon(code?: number) {
   return '/icons/sun.png';
 }
 
-const CurrentWeather = ({ data }: Props) => {
+const CurrentWeather = () => {
+  const { data, error } = useWeather();
+
+  if (error) return <p>Failed to fetch data : {error?.message}</p>;
+
   return (
     <Card className='bg-slate-800 shadow-none border-none mb-6 flex flex-row'>
       <div className='flex-1 flex flex-col justify-between'>
@@ -72,7 +72,7 @@ const CurrentWeather = ({ data }: Props) => {
           className=''
           unoptimized
         />
-        <FavoriteButton data={data} />
+        <FavoriteButton />
       </div>
     </Card>
   );

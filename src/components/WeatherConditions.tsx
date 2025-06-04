@@ -1,13 +1,13 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
 import { Droplet, Sun, ThermometerSun, Wind } from 'lucide-react';
-import { WeatherResponse } from '@/types/apiType';
+import { useWeather } from '@/hooks/useWeather';
 
-interface WeatherConditionsProps {
-  data: WeatherResponse;
-}
+const WeatherConditions = () => {
+  const { data, error } = useWeather();
 
-const WeatherConditions = ({ data }: WeatherConditionsProps) => {
+  if (error) return <p>Failed to fetch data : {error?.message}</p>;
+
   return (
     <Card className='bg-card-foreground border-none'>
       <CardHeader className='flex flex-row justify-between items-center pb-4'>
@@ -26,7 +26,7 @@ const WeatherConditions = ({ data }: WeatherConditionsProps) => {
             <div className='ml-3'>
               <p className='text-slate-400'>Real Feel</p>
               <p className='text-2xl font-semibold text-slate-200'>
-                {data.main.feels_like}°
+                {data?.main.feels_like}°
               </p>
             </div>
           </div>
@@ -38,7 +38,7 @@ const WeatherConditions = ({ data }: WeatherConditionsProps) => {
             <div className='ml-3'>
               <p className='text-slate-400'>Wind</p>
               <p className='text-2xl font-semibold text-slate-200'>
-                {data.wind.speed} km/h
+                {data?.wind.speed} km/h
               </p>
             </div>
           </div>
@@ -62,7 +62,7 @@ const WeatherConditions = ({ data }: WeatherConditionsProps) => {
             <div className='ml-3'>
               <p className='text-slate-400'>UV Index</p>
               <p className='text-2xl font-semibold text-slate-200'>
-                {data.daily?.uv_index_max || 0}
+                {data?.daily?.uv_index_max || 0}
               </p>
             </div>
           </div>

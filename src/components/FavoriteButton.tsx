@@ -1,19 +1,20 @@
 import { useFavoriteCities } from '@/hooks/useFavoriteCities';
-import { WeatherResponse } from '@/types/apiType';
 import { Star } from 'lucide-react';
 import React from 'react';
 import { toast } from 'sonner';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { useWeather } from '@/hooks/useWeather';
 
-type Props = {
-  data: WeatherResponse;
-};
+const FavoriteButton = () => {
+  const { data, error } = useWeather();
 
-const FavoriteButton = ({ data }: Props) => {
   const { isFavorite, addFavorite, removeFavorite } = useFavoriteCities();
-  const isCurrentFavorite = isFavorite(data.coord.lat, data.coord.lon);
+  const isCurrentFavorite = data
+    ? isFavorite(data.coord.lat, data.coord.lon)
+    : false;
 
   const handleToggleFavorite = () => {
+    if (!data) return;
     if (isCurrentFavorite) {
       removeFavorite.mutate({ lat: data.coord.lat, lon: data.coord.lon });
       toast.error(`City ${data.name}  has been removed`);
@@ -28,6 +29,8 @@ const FavoriteButton = ({ data }: Props) => {
       toast.success(`City ${data.name} has been added to favorites`);
     }
   };
+
+  if (error) return <p>Failed to fetch data : {error?.message}</p>;
 
   return (
     <Tooltip>

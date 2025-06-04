@@ -1,12 +1,8 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { WeatherResponse } from '@/types/apiType';
+import { useWeather } from '@/hooks/useWeather';
 import { Sunrise, Sunset } from 'lucide-react';
-
-type Props = {
-  data: WeatherResponse;
-};
 
 // Helper to convert unix timestamp (seconds) to local time string (AM/PM)
 function formatTime(unix: number) {
@@ -17,12 +13,16 @@ function formatTime(unix: number) {
   }).format(new Date(unix * 1000));
 }
 
-export function SunPosition({ data }: Props) {
+export function SunPosition() {
+  const { data, error } = useWeather();
+
   const sunrise = data?.sys?.sunrise;
   const sunset = data?.sys?.sunset;
 
   const sunriseStr = sunrise !== undefined ? formatTime(sunrise) : '--';
   const sunsetStr = sunset !== undefined ? formatTime(sunset) : '--';
+
+  if (error || !data) return <p>Failed to fetch data : {error?.message}</p>;
 
   return (
     <Card className='bg-card-foreground border-none '>

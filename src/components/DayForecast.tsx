@@ -3,9 +3,9 @@ import { Separator } from './ui/separator';
 import { WeatherResponse } from '@/types/apiType';
 import { iconMap } from '@/lib/constants/weather-icons';
 import Image from 'next/image';
+import { useWeather } from '@/hooks/useWeather';
 
 type Props = {
-  data: WeatherResponse;
   days?: number;
   className?: string;
 };
@@ -29,9 +29,13 @@ const formatDailyForecast = (data: WeatherResponse) => {
   });
 };
 
-const DayForecast = ({ days, className, data }: Props) => {
-  const forecast = formatDailyForecast(data);
-  // Nếu days không truyền vào hoặc lớn hơn số phần tử, hiển thị tất cả
+const DayForecast = ({ days, className }: Props) => {
+  const { data, error } = useWeather();
+
+  if (error) return <p>Failed to fetch data : {error?.message}</p>;
+
+  const forecast = data ? formatDailyForecast(data) : [];
+
   const displayForecast =
     typeof days === 'number' ? forecast.slice(0, days) : forecast;
 
