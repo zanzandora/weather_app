@@ -4,7 +4,6 @@ import { WeatherResponse } from '@/types/apiType';
 import { iconMap } from '@/lib/constants/weather-icons';
 import Image from 'next/image';
 import { useWeather } from '@/hooks/useWeather';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 type Props = {
   days?: number;
