@@ -4,6 +4,7 @@ import { WeatherResponse } from '@/types/apiType';
 import { iconMap } from '@/lib/constants/weather-icons';
 import Image from 'next/image';
 import { useWeather } from '@/hooks/useWeather';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 type Props = {
   days?: number;
@@ -66,9 +67,7 @@ const DayForecast = ({ days, className }: Props) => {
                     height={50}
                   />
                 </div>
-                {/* <div className='flex-1 ml-4 text-foreground font-sans capitalize'>
-                  <p>{day.description}</p>
-                </div> */}
+
                 <div className='text-right'>
                   <span className='font-semibold text-white'>
                     {day?.maxTemp ? Math.round(day?.maxTemp) : '--'}°

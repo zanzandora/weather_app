@@ -17,7 +17,9 @@ const FavoriteButton = () => {
     if (!data) return;
     if (isCurrentFavorite) {
       removeFavorite.mutate({ lat: data.coord.lat, lon: data.coord.lon });
-      toast.error(`City ${data.name}  has been removed`);
+      toast.error(`City ${data.name} has been removed`, {
+        position: window.innerWidth < 640 ? 'top-center' : 'top-right',
+      });
     } else {
       addFavorite.mutate({
         name: data.name,
@@ -26,7 +28,9 @@ const FavoriteButton = () => {
         lon: data.coord.lon,
         country: data.sys.country,
       });
-      toast.success(`City ${data.name} has been added to favorites`);
+      toast.success(`City ${data.name} has been added to favorites`, {
+        position: window.innerWidth < 640 ? 'top-center' : 'top-right',
+      });
     }
   };
 

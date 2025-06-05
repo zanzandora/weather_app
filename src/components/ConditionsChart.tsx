@@ -13,6 +13,8 @@ import {
 import {
   type ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
@@ -277,6 +279,7 @@ export default function ConditionChart() {
                 cursor={false}
                 content={
                   <ChartTooltipContent
+                    className='text-foreground'
                     labelFormatter={(value) => {
                       return new Date(value).toLocaleDateString('vi-VN', {
                         weekday: 'short',
@@ -316,6 +319,7 @@ export default function ConditionChart() {
                 stroke='var(--chart-4)'
                 stackId='a'
               />
+              <ChartLegend content={<ChartLegendContent />} />
             </AreaChart>
           </ChartContainer>
         )}

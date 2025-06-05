@@ -11,6 +11,7 @@ import { Badge } from './ui/badge';
 import { iconMap } from '@/lib/constants/weather-icons';
 import FavoriteButton from './FavoriteButton';
 import { useWeather } from '@/hooks/useWeather';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 function getWeatherIcon(code?: number) {
   if (code !== undefined && iconMap[code]) {
@@ -20,18 +21,19 @@ function getWeatherIcon(code?: number) {
 }
 
 const CurrentWeather = () => {
+  const isMobile = useIsMobile();
   const { data, error } = useWeather();
 
   if (error) return <p>Failed to fetch data : {error?.message}</p>;
 
   return (
-    <Card className='bg-slate-800 shadow-none border-none mb-6 flex flex-row'>
+    <Card className='bg-slate-800 shadow-none border-none  flex flex-row'>
       <div className='flex-1 flex flex-col justify-between'>
         <CardHeader>
-          <CardTitle className='text-4xl font-semibold text-foreground'>
+          <CardTitle className='text-xl lg:text-2xl xl:text-4xl  font-semibold text-foreground'>
             {data?.name || 'N/A'}, {data?.sys?.country || ''}{' '}
           </CardTitle>
-          <CardDescription className='text-gray-400 capitalize'>
+          <CardDescription className='text-gray-400 capitalize text-base lg:text-sm xl:text-2xl'>
             {data?.weather?.[0]?.description || ''}
           </CardDescription>
         </CardHeader>
@@ -64,14 +66,16 @@ const CurrentWeather = () => {
         </CardContent>
       </div>
       <div className='px-6 flex items-start justify-center'>
-        <Image
-          src={`${getWeatherIcon(data?.daily?.weathercode[0]) || 'sun.png'}`}
-          alt='Weather animation'
-          width={220}
-          height={200}
-          className=''
-          unoptimized
-        />
+        {!isMobile && (
+          <Image
+            src={`${getWeatherIcon(data?.daily?.weathercode[0]) || 'sun.png'}`}
+            alt='Weather animation'
+            width={220}
+            height={200}
+            className=''
+            unoptimized
+          />
+        )}
         <FavoriteButton />
       </div>
     </Card>

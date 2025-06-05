@@ -35,9 +35,9 @@ export default function RootLayout({
           <div className='flex min-h-screen font-[family-name:var(--font-geist-sans)] gap-4'>
             <SideBar />
             {/* MAIN CONTENT */}
-            <div className='flex-1 flex flex-col'>
+            <div className='flex-1 flex flex-col  mx-4 sm:mx-8 '>
               {/* Search bar always on top */}
-              <div className='sticky top-0 z-20 bg-slate-800/80 backdrop-blur-md mr-4'>
+              <div className='sticky top-0 z-20 bg-slate-800/80 backdrop-blur-md '>
                 <SearchInput />
               </div>
               {children}
