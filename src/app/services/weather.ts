@@ -116,13 +116,29 @@ async function getCoordinates(
   }
   if (typeof window !== 'undefined' && navigator.geolocation) {
     try {
-      const { coords } = await new Promise<GeolocationPosition>(
-        (resolve, reject) =>
-          navigator.geolocation.getCurrentPosition(resolve, reject)
+      // On mobile devices (iOS, Android, Safari), prompt user for location
+      const position: GeolocationPosition = await new Promise(
+        (resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(
+            resolve,
+            (error) => {
+              // iOS/Safari may require HTTPS and user permission
+              reject(error);
+            },
+            {
+              enableHighAccuracy: true, // improve accuracy on mobile
+              timeout: 10000,
+              maximumAge: 0,
+            }
+          );
+        }
       );
-      return { lat: coords.latitude, lon: coords.longitude };
+      const { latitude, longitude } = position.coords;
+      return { lat: latitude, lon: longitude };
     } catch {
-      throw new Error('Không lấy được vị trí từ trình duyệt.');
+      throw new Error(
+        'Không lấy được vị trí từ trình duyệt hoặc thiết bị di động.'
+      );
     }
   }
   throw new Error('Không có toạ độ hợp lệ để lấy dữ liệu thời tiết.');
