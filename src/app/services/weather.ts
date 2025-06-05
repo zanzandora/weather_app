@@ -73,7 +73,7 @@ export async function fetchAirPollution(
 ) {
   try {
     const { data } = await axios.get(
-      `http://api.openweathermap.org/data/2.5/air_pollution/history?lat=${lat}&lon=${lon}&start=${start}&end=${end}&appid=${API_KEY}`
+      `https://api.openweathermap.org/data/2.5/air_pollution/history?lat=${lat}&lon=${lon}&start=${start}&end=${end}&appid=${API_KEY}`
     );
     return data?.list || [];
   } catch (error) {
