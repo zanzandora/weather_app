@@ -1,12 +1,13 @@
 'use client';
 
+import React, { Suspense } from 'react';
 import CurrentWeather from '@/components/CurrentWeather';
 import DayForecast from '@/components/DayForecast';
 import ConditionsSection from '@/components/ConditionsSection ';
 import { useWeather } from '@/hooks/useWeather';
 import { useSearchParams } from 'next/navigation';
 
-export default function City() {
+function CityContent() {
   const searchParams = useSearchParams();
 
   const name = searchParams.get('name') ?? undefined;
@@ -32,5 +33,13 @@ export default function City() {
         <DayForecast />
       </div>
     </main>
+  );
+}
+
+export default function City() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <CityContent />
+    </Suspense>
   );
 }
